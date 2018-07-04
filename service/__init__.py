@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import yaml
 
-from utils import jsonify
+from service.utils import jsonify
 
 
 config_yaml = open('config/test.yml').read()

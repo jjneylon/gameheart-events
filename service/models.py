@@ -1,4 +1,4 @@
-from service import db
+from service.__init__ import db
 from sqlalchemy_utils import UUIDType
 
 
