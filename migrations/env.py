@@ -1,7 +1,11 @@
 from __future__ import with_statement
+
+from logging.config import fileConfig
+import os
+
 from alembic import context
 from sqlalchemy import engine_from_config, pool
-from logging.config import fileConfig
+import yaml
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -23,6 +27,13 @@ target_metadata = None
 # ... etc.
 
 
+def get_url():
+    stage = os.environ.get('GH_STAGE', 'test')
+    config_yaml = open('config/{}.yml'.format(stage)).read()
+    config = yaml.load(config_yaml)
+    return config['SQLALCHEMY_DATABASE_URI']
+
+
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
 
@@ -35,9 +46,11 @@ def run_migrations_offline():
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
     context.configure(
-        url=url, target_metadata=target_metadata, literal_binds=True)
+        url=get_url(),
+        target_metadata=target_metadata,
+        literal_binds=True
+    )
 
     with context.begin_transaction():
         context.run_migrations()
@@ -50,8 +63,10 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
+    configuration = config.get_section(config.config_ini_section)
+    configuration['sqlalchemy.url'] = get_url()
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section),
+        configuration,
         prefix='sqlalchemy.',
         poolclass=pool.NullPool)
 
@@ -63,6 +78,7 @@ def run_migrations_online():
 
         with context.begin_transaction():
             context.run_migrations()
+
 
 if context.is_offline_mode():
     run_migrations_offline()
