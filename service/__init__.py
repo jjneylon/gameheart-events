@@ -19,7 +19,3 @@ def hello():
 @app.route('/config')
 def display_config():
     return jsonify(dict(app.config), date_fmt='%Y-%m-%dT%H:%M:%S')
-
-
-if __name__ == '__main__':
-    app.run()
