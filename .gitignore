@@ -106,5 +106,8 @@ venv.bak/
 # Configs
 config/
 
+# sqlite
+test.db
+
 # pyCharm
 .idea/

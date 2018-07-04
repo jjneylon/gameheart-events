@@ -37,21 +37,27 @@ def upgrade():
         db.Column('end_time', db.DateTime(timezone=True)),
     )
 
-    op.create_primary_key('pk_site', 'site', ['uuid'])
+    try:
+        op.create_primary_key('pk_site', 'site', ['uuid'])
 
-    op.create_primary_key('pk_event', 'event', ['uuid'])
+        op.create_primary_key('pk_event', 'event', ['uuid'])
 
-    op.create_foreign_key(
-        'fk_event_site',
-        'event',
-        'site',
-        ['site_uuid'],
-        ['uuid'],
-    )
+        op.create_foreign_key(
+            'fk_event_site',
+            'event',
+            'site',
+            ['site_uuid'],
+            ['uuid'],
+        )
+    except NotImplementedError:
+        pass
 
 
 def downgrade():
-    op.drop_foreign_key('fk_event_site')
+    try:
+        op.drop_foreign_key('fk_event_site')
+    except NotImplementedError:
+        pass
 
     op.drop_table('event')
 
