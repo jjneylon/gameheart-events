@@ -4,7 +4,7 @@ from sqlalchemy_utils import UUIDType
 
 class Site(db.Model):
     __tablename__ = 'site'
-    uuid = db.Column(UUIDType(), primary_key=True)
+    uuid = db.Column(UUIDType(), primary_key=True, methods=['GET'])
     chapter_uuid = db.Column(UUIDType())
     title = db.Column(db.String(32))
     latitude = db.Column(db.String(32))
@@ -15,7 +15,7 @@ class Site(db.Model):
 
 class Event(db.Model):
     __tablename__ = 'event'
-    uuid = db.Column(UUIDType(), primary_key=True)
+    uuid = db.Column(UUIDType(), primary_key=True, methods=['GET'])
     site_uuid = db.Column(UUIDType(), db.ForeignKey('site.uuid'))
     chapter_uuid = db.Column(UUIDType())
     title = db.Column(db.String(32))
