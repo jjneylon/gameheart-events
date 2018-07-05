@@ -1,10 +1,10 @@
-import json
 from flask import Blueprint, request
 
 from service import db, config
 from service.handlers import (
     handle_put,
 )
+from service.models import model_registry
 from service.utils import jsonify
 
 
@@ -23,6 +23,8 @@ def display_config():
 
 @api_blueprint.route('/api/<model_name>', methods=['PUT'])
 def put_model(model_name):
-    model_cls = db.model_registry.get(model_name)
-    handle_put(model_cls, request.data, db)
-    return json.dumps({'model_created': model_name})
+    import pdb;pdb.set_trace()
+    model_cls = model_registry.get(model_name)
+    status_code, message = handle_put(model_cls, request.data, db)
+    request.status_code = status_code
+    return message
