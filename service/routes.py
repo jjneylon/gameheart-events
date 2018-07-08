@@ -3,6 +3,7 @@ from flask import Blueprint, request
 from service import db, config
 from service.handlers import (
     handle_get,
+    handle_patch,
     handle_put,
 )
 from service.models import model_registry
@@ -27,6 +28,14 @@ def get_model(model_name, model_id):
     model_cls = model_registry.get(model_name)
     status_code, message = handle_get(model_cls, model_id, db)
     request.status_code = status_code
+    return message
+
+
+@api_blueprint.route('/api/<model_name>/<model_id>', methods=['PATCH'])
+def patch_model(model_name, model_id):
+    model_cls = model_registry.get(model_name)
+    payload = request.json or {}
+    status_code, message = handle_patch(model_cls, model_id, payload, db)
     return message
 
 
