@@ -23,8 +23,8 @@ def display_config():
 
 @api_blueprint.route('/api/<model_name>', methods=['PUT'])
 def put_model(model_name):
-    import pdb;pdb.set_trace()
     model_cls = model_registry.get(model_name)
-    status_code, message = handle_put(model_cls, request.data, db)
+    payload = request.json or {}
+    status_code, message = handle_put(model_cls, payload, db)
     request.status_code = status_code
     return message
