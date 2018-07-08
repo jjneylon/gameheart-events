@@ -2,6 +2,7 @@ from flask import Blueprint, request
 
 from service import db, config
 from service.handlers import (
+    handle_get,
     handle_put,
 )
 from service.models import model_registry
@@ -19,6 +20,14 @@ def hello():
 @api_blueprint.route('/config')
 def display_config():
     return jsonify(dict(config), date_fmt='%Y-%m-%dT%H:%M:%S')
+
+
+@api_blueprint.route('/api/<model_name>/<model_id>', methods=['GET'])
+def get_model(model_name, model_id):
+    model_cls = model_registry.get(model_name)
+    status_code, message = handle_get(model_cls, model_id, db)
+    request.status_code = status_code
+    return message
 
 
 @api_blueprint.route('/api/<model_name>', methods=['PUT'])
