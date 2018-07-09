@@ -36,6 +36,24 @@ def patch_model(model_name, model_id):
     model_cls = model_registry.get(model_name)
     payload = request.json or {}
     status_code, message = handle_patch(model_cls, model_id, payload, db)
+    request.status_code = status_code
+    return message
+
+
+@api_blueprint.route('/api/<model_name>', methods=['POST'])
+def post_new_model(model_name):
+    model_cls = model_registry.get(model_name)
+    payload = request.form or {}
+    status_code, message = handle_put(model_cls, payload, db)
+    request.status_code = status_code
+
+
+@api_blueprint.route('/api/<model_name>/model_id', methods=['POST'])
+def post_update_model(model_name, model_id):
+    model_cls = model_registry.get(model_name)
+    payload = request.form or {}
+    status_code, message = handle_patch(model_cls, model_id, payload, db)
+    request.status_code = status_code
     return message
 
 
