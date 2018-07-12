@@ -108,6 +108,7 @@ config/
 
 # sqlite
 test.db
+local.db
 
 # pyCharm
 .idea/
