@@ -23,6 +23,8 @@ class HandleGetTestCase(GHTestCase):
             {'id': 1, 'latitude': None, 'chapter_id': 1234, 'longitude': None, 'title': 'Test Site 1'}
         )
 
+
+class HandlePatchTestCase(GHTestCase):
     def test_handle_patch(self):
         site = Site(chapter_id='1234', title='Test Site 1')
         db.session.add(site)
@@ -37,6 +39,8 @@ class HandleGetTestCase(GHTestCase):
             {'id': 1, 'title': 'Test Site 2'}
         )
 
+
+class HandlePutTestCase(GHTestCase):
     def test_handle_put(self):
         site_payload = {'chapter_id': '1234', 'title': 'Test Site 1'}
 
