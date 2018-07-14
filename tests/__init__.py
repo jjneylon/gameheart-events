@@ -31,12 +31,3 @@ class RequestContext:
             with db.app.test_request_context(**context_kwargs):
                 func(*args, **kwargs)
         return wrapper
-
-
-def request_context(url='', json=None):
-    def decorator(func):
-        def wrapper(*args, **kwargs):
-            with db.app.test_request_context(url, json=json):
-                func(*args, **kwargs)
-        return wrapper
-    return decorator
